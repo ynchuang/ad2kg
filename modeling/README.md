@@ -8,7 +8,8 @@ pip install -r requirements.txt
 ```
 
 ### Testing Dataset
-Appears in data/
+Please download the data from the following link
+https://drive.google.com/file/d/1QKWRGjpgZiKTe0RZkNjoKle1T3mt6zi1/view?usp=share_link
 
 ### Modeler
 
