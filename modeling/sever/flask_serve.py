@@ -64,11 +64,11 @@ class id2abs(Resource):
                 abs_text_str = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
             title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
 
-            return {
+            return json.dumps({
                 'given': args['id'],
                 'title': title_text,
                 'abstract': abs_text_str
-            }
+            })
         except:
             return 'ID Not Found'
 
@@ -82,11 +82,11 @@ class id2author(Resource):
             idx = int(id_to_idx[args['id']])
             author_dict = train_dict[idx]['MedlineCitation']['Article']['AuthorList']['Author']
             title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
-            return {
+            return json.dumps({
                 'given': args['id'],
                 'title': title_text,
                 'auther_list': author_dict
-            }
+            })
         except:
             return 'ID Not Found'
 
@@ -129,14 +129,14 @@ class id2keyword(Resource):
                     # print(keyword_dict["#text"])
                     keyword_list.append(keyword_dict["#text"])
 
-            print(keyword_list)
+            # print(keyword_list)
 
-            return {
+            return json.dumps({
                 'given': args['id'],
                 'title': title_text,
                 'abstract': abs_text_str,
                 'keyword': keyword_list,
-            }
+            })
         except:
             return 'ID Not Found'
 
@@ -165,11 +165,11 @@ class id2downloadurl(Resource):
                 pii_id = infolist[idx]["#text"]
                 url = "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/" + pii_id
 
-            return {
+            return json.dumps({
                 'given': args['id'],
                 'title': title_text,
                 'download_url': url
-            }
+            })
         except:
             return 'ID Not Found'
 
@@ -200,11 +200,11 @@ class id2nihurl(Resource):
                 # print(pmc_id)
                 url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
 
-            return {
+            return json.dumps({
                 'given': args['id'],
                 'title': title_text,
                 'NIH_url': url
-            }
+            })
         except:
             return 'ID Not Found'
 
@@ -227,66 +227,6 @@ def dict_all(data):
             print(data)
             print("")
 
-
-        # for idx in range(len(id_to_idx)):
-        #     keyword_list = []
-        #     # print(train_dict[idx]["PubmedData"]["PublicationStatus"])
-        #     # print(train_dict[idx]['MedlineCitation'].keys())
-        #     # print(train_dict[idx]['MedlineCitation']["Article"].keys())
-        #
-        #     title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
-        #     # print(title_text)
-        #
-        #     # if "ISSN" in train_dict[idx]['MedlineCitation']["Article"]["Journal"].keys():
-        #     #     print(train_dict[idx]['MedlineCitation']["Article"]["Journal"]["ISSN"]["#text"])
-        #     # else:
-        #     #     print(None)
-        #     #
-        #     # if "ISSNLinking" in train_dict[idx]['MedlineCitation']["MedlineJournalInfo"].keys():
-        #     # # MedlineJournalInfo -> Country -> MedlineTA -> NlmUniqueID -> ISSNLinking -> 1931 - 7557
-        #     #     print(train_dict[idx]['MedlineCitation']["MedlineJournalInfo"]["ISSNLinking"])
-        #     # else:
-        #     #     print(None)
-        #
-        #     print(train_dict[idx]['PubmedData']['ArticleIdList']) # ['pmc']['#text']
-        #
-        #     infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
-        #
-        #     key_buf = [x["@IdType"] for x in infolist]
-        #     if "pmc" in key_buf:
-        #         idx = key_buf.index("pmc")
-        #         print(infolist[idx])
-        #         pmc_id = infolist[idx]["#text"]
-        #
-        #
-        #         print(pmc_id)
-        #
-        #     hegsns
-
-
-# print(train_dict[idx].keys())
-# print(train_dict[idx]['PubmedData'].keys())
-# print(train_dict[idx]['MedlineCitation'].keys())
-# print(train_dict[idx]['MedlineCitation']['@IndexingMethod'])
-
-# for idx in range(len(id_to_idx)):
-#     keyword_list = []
-#
-#     if "KeywordList" in train_dict[idx]['MedlineCitation'].keys():
-#
-#         # print(type(train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]))
-#
-#         for keyword_dict in train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]:
-#             # print(keyword_dict["#text"])
-#             keyword_list.append(keyword_dict["#text"])
-#
-#     print(keyword_list)
-
-
-# for akey in list(train_dict[idx]['MedlineCitation']['Article'].keys()):
-#     print(akey, train_dict[idx]['MedlineCitation']['Article'][akey])
-#     print("")
-#     print("")
 
         
 if __name__ == '__main__':
