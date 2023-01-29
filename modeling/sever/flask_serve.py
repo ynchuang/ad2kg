@@ -51,7 +51,6 @@ class id2abs(Resource):
         args = id_parser.parse_args()
 
         try:
-            # print(id_to_idx)
             idx = int(id_to_idx[args['id']])
             abs_text = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
             if isinstance(abs_text, list):
@@ -90,12 +89,6 @@ class id2author(Resource):
         except:
             return 'ID Not Found'
 
-# @ns_conf.route('/id2author')
-# class id2author(Resource):
-#     @ns_conf.doc(parser=id_parser)
-#     def get(self):
-#         return {}
-
 
 @ns_conf.route('/id2keyword')
 class id2keyword(Resource):
@@ -103,9 +96,6 @@ class id2keyword(Resource):
     def get(self):
         train_dict, id_to_idx = pkl_loader()
         args = id_parser.parse_args()
-
-        # idx = int(id_to_idx[args['id']])
-        # print(id_to_idx)
 
         try: # 30569483 # not all of the article has a keyword list
 
@@ -126,10 +116,7 @@ class id2keyword(Resource):
 
             if "KeywordList" in train_dict[idx]['MedlineCitation'].keys():
                 for keyword_dict in train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]:
-                    # print(keyword_dict["#text"])
                     keyword_list.append(keyword_dict["#text"])
-
-            # print(keyword_list)
 
             return json.dumps({
                 'given': args['id'],
@@ -148,13 +135,10 @@ class id2downloadurl(Resource):
         train_dict, id_to_idx = pkl_loader()
         args = id_parser.parse_args()
 
-        # print(id_to_idx)
         try: # 31825506 # not all of the article has a url
 
             idx = int(id_to_idx[args['id']])
             title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
-            # dict_all(train_dict[idx])
-            # print(train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId'])
 
             infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
             key_buf = [x["@IdType"] for x in infolist]
@@ -181,14 +165,10 @@ class id2nihurl(Resource):
         train_dict, id_to_idx = pkl_loader()
         args = id_parser.parse_args()
 
-        # print(id_to_idx)
         try: # 31825506 # not all of the article has a url
 
             idx = int(id_to_idx[args['id']])
             title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
-            # dict_all(train_dict[idx])
-
-            # print(train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId'])
 
             infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
             key_buf = [x["@IdType"] for x in infolist]
@@ -197,7 +177,6 @@ class id2nihurl(Resource):
             if "pmc" in key_buf:
                 idx = key_buf.index("pmc")
                 pmc_id = infolist[idx]["#text"]
-                # print(pmc_id)
                 url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
 
             return json.dumps({
@@ -214,10 +193,6 @@ def dict_all(data):
             print(k, end=" -> ")
             dict_all(v)
 
-            # if k == "ISSNLinking":
-            #     print(v)
-            # else:
-            #     dict_all(v)
 
     elif isinstance(data, (list, tuple, set)):
         for v in data:
@@ -228,6 +203,5 @@ def dict_all(data):
             print("")
 
 
-        
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5566)
