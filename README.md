@@ -12,6 +12,6 @@ This is a project of Alzheimer's disease on knowledge graph
 ## Planning features
 
 - [ ] API construction
-    - [ ] Basic functionality
+    - [ v ] Basic functionality
     - [ ] Recommendation/IR Moudule
 - [ ] Web construction
