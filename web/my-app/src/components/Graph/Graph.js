@@ -62,8 +62,8 @@ const Graph = ({ nodeInfo, setNodeInfo }) => {
             id="graph-id"
             ref={visRef}
             style={{
-                width: `600px`,
-                height: `600px`,
+                width: `100%`,
+                height: `800px`,
                 backgroundColor: `"#d3d3d3"`,
             }}
         />
