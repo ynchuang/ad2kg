@@ -1,8 +1,10 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Neovis from "neovis.js/dist/neovis.js";
 
-const Graph = ({ nodeInfo, setNodeInfo }) => {
+const Graph = ({ setNodeInfo }) => {
+    const [query, setQuery] = useState('');
     const visRef = useRef();
+    const neoVis = useRef();
 
     useEffect(() => {
         const config = {
@@ -41,9 +43,9 @@ const Graph = ({ nodeInfo, setNodeInfo }) => {
             initial_cypher: "MATCH p = (bio_ner_h)-[r*1..3]->(bio_ner_t) WHERE bio_ner_t.name = 35061102 or bio_ner_h.name = 35061102 RETURN p",
             arrows: true,
         };
-        const vis = new Neovis(config);
-        vis.render();
-        vis.registerOnEvent('clickNode', (e) => {
+        neoVis.current = new Neovis(config);
+        neoVis.current.render();
+        neoVis.current.registerOnEvent('clickNode', (e) => {
             // e: { nodeId: number; node: Node }
             console.info(e);
             setNodeInfo({
@@ -55,18 +57,42 @@ const Graph = ({ nodeInfo, setNodeInfo }) => {
                 value: e.node.value,
             });
         });
-    });
+    }, []);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(query);
+
+        if (query.length > 3) {
+            console.log("queryWithCypher")
+            neoVis.current.renderWithCypher(query);
+        } else {
+            console.log("reload");
+            neoVis.current.reload();
+        }
+    };
 
     return (
-        <div
-            id="graph-id"
-            ref={visRef}
-            style={{
-                width: `100%`,
-                height: `800px`,
-                backgroundColor: `"#d3d3d3"`,
-            }}
-        />
+        <>
+            <div className="row">
+                <form onSubmit={handleSubmit}>
+                    <label>
+                        Query:
+                        <input type="text" value={query} onChange={(event) => setQuery(event.target.value)} />
+                    </label>
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+            <div
+                id="graph-id"
+                ref={visRef}
+                style={{
+                    width: `100%`,
+                    height: `800px`,
+                    backgroundColor: `"#d3d3d3"`,
+                }}
+            />
+        </>
     );
 }
 
