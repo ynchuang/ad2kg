@@ -3,7 +3,8 @@ import argparse
 import logging
 import json
 import numpy as np
-from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS
 try:
     from flask_restplus import Namespace, Resource, Api
 except:
@@ -20,6 +21,7 @@ from os.path import isfile, join
 from collections import defaultdict
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app=app)
 ns_conf = api.namespace('knowledgegraph', description='methods')
 
@@ -63,7 +65,7 @@ class id2abs(Resource):
                 abs_text_str = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
             title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
 
-            return json.dumps({
+            return jsonify({
                 'given': args['id'],
                 'title': title_text,
                 'abstract': abs_text_str
@@ -81,7 +83,7 @@ class id2author(Resource):
             idx = int(id_to_idx[args['id']])
             author_dict = train_dict[idx]['MedlineCitation']['Article']['AuthorList']['Author']
             title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
-            return json.dumps({
+            return jsonify({
                 'given': args['id'],
                 'title': title_text,
                 'auther_list': author_dict
@@ -118,7 +120,7 @@ class id2keyword(Resource):
                 for keyword_dict in train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]:
                     keyword_list.append(keyword_dict["#text"])
 
-            return json.dumps({
+            return jsonify({
                 'given': args['id'],
                 'title': title_text,
                 'abstract': abs_text_str,
@@ -149,7 +151,7 @@ class id2downloadurl(Resource):
                 pii_id = infolist[idx]["#text"]
                 url = "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/" + pii_id
 
-            return json.dumps({
+            return jsonify({
                 'given': args['id'],
                 'title': title_text,
                 'download_url': url
@@ -179,7 +181,7 @@ class id2nihurl(Resource):
                 pmc_id = infolist[idx]["#text"]
                 url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
 
-            return json.dumps({
+            return jsonify({
                 'given': args['id'],
                 'title': title_text,
                 'NIH_url': url
