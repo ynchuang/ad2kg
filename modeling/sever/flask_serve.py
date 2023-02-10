@@ -45,6 +45,70 @@ def pkl_loader():
         id_to_idx[str(id_num)] = idx
     return train_dict['PubmedArticleSet']['PubmedArticle'], id_to_idx
 
+@ns_conf.route('/details')
+class id(Resource):
+    @ns_conf.doc(parser=id_parser)
+    def get(self):
+        train_dict, id_to_idx = pkl_loader()
+        args = id_parser.parse_args()
+
+        try:
+            idx = int(id_to_idx[args['id']])
+
+            '''Abstract'''
+            abs_text = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
+            if isinstance(abs_text, list):
+                abs_text_str = ""
+                for subtext in abs_text:
+                    subtext = subtext["#text"]
+                    subtext += " "
+                    abs_text_str += subtext
+            else:
+                abs_text_str = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
+
+            '''Title'''
+            title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
+            
+            '''Author'''
+            author_dict = train_dict[idx]['MedlineCitation']['Article']['AuthorList']['Author']
+
+            '''Keyword'''
+            keyword_list = []
+
+            if "KeywordList" in train_dict[idx]['MedlineCitation'].keys():
+                for keyword_dict in train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]:
+                    keyword_list.append(keyword_dict["#text"])
+
+            '''Download URL'''
+            infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
+            key_buf = [x["@IdType"] for x in infolist]
+            download_url = None
+
+            if "pii" in key_buf:
+                idx = key_buf.index("pii")
+                pii_id = infolist[idx]["#text"]
+                download_url = "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/" + pii_id
+
+            '''NIH URL'''
+            nih_url = None
+
+            if "pmc" in key_buf:
+                idx = key_buf.index("pmc")
+                pmc_id = infolist[idx]["#text"]
+                nih_url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
+
+            return jsonify({
+                'given': args['id'],
+                'title': title_text,
+                'abstract': abs_text_str,
+                'author_list': author_dict,
+                'keyword': keyword_list,
+                'download_url': download_url,
+                'nih_url': nih_url,
+            })
+        except:
+            return 'ID Not Found'
+
 @ns_conf.route('/id2abs')
 class id2abs(Resource):
     @ns_conf.doc(parser=id_parser)
