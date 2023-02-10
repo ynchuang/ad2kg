@@ -67,8 +67,12 @@ class id(Resource):
                 abs_text_str = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
 
             '''Title'''
-            title_text = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
-            
+            title_text_prefix = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
+            if isinstance(title_text_prefix, str):
+                title_text = title_text_prefix
+            else:
+                title_text = title_text_prefix['#text'][:-1] + title_text_prefix['i']
+
             '''Author'''
             author_dict = train_dict[idx]['MedlineCitation']['Article']['AuthorList']['Author']
 
@@ -79,33 +83,50 @@ class id(Resource):
                 for keyword_dict in train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]:
                     keyword_list.append(keyword_dict["#text"])
 
-            '''Download URL'''
+            '''NIH URL'''
             infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
             key_buf = [x["@IdType"] for x in infolist]
-            download_url = None
-
-            if "pii" in key_buf:
-                idx = key_buf.index("pii")
-                pii_id = infolist[idx]["#text"]
-                download_url = "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/" + pii_id
-
-            '''NIH URL'''
             nih_url = None
 
+            if "doi" in key_buf:
+                idx = key_buf.index("doi")
+                doi = infolist[idx]["#text"]
+
+            if "pubmed" in key_buf:
+                idx = key_buf.index("pubmed")
+                pubmed = infolist[idx]["#text"]
+                nih_url = "https://pubmed.ncbi.nlm.nih.gov/" + pubmed
+
+            '''Download URL'''
+            download_url = None
             if "pmc" in key_buf:
                 idx = key_buf.index("pmc")
                 pmc_id = infolist[idx]["#text"]
-                nih_url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
+                download_url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
 
-            return jsonify({
-                'given': args['id'],
-                'title': title_text,
-                'abstract': abs_text_str,
-                'author_list': author_dict,
-                'keyword': keyword_list,
-                'download_url': download_url,
-                'nih_url': nih_url,
-            })
+            if len(key_buf) == 4:
+                return jsonify({
+                    'given': args['id'],
+                    'title': title_text,
+                    'abstract': abs_text_str,
+                    'author_list': author_dict,
+                    'pmid': pubmed,
+                    'pmcid': pmc_id,
+                    'doi': doi,
+                    'keyword': keyword_list,
+                    'download_url': download_url,
+                    'nih_url': nih_url,
+                })
+            else:
+                return jsonify({
+                        'given': args['id'],
+                        'title': title_text,
+                        'abstract': abs_text_str,
+                        'author_list': author_dict,
+                        'keyword': keyword_list,
+                        'download_url': download_url,
+                        'nih_url': nih_url,
+                })
         except:
             return 'ID Not Found'
 
