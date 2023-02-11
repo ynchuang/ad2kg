@@ -53,6 +53,7 @@ c =df1['label']
 for data in zip(a,b,c):
     node = Node('NER_Bio', name=data[1])
     node['id']=data[0]
+    node['name']=data[1]
     node['Source']=data[2]
     graph.create(node)
 
@@ -92,6 +93,7 @@ c =df1['label']
 for data in zip(a,b,c):
     node = Node('Paper', name=data[1])
     node['id']=data[0]
+    node['name']=data[1]
     node['Source']=data[2]
     graph.create(node)
 
