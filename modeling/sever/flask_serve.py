@@ -5,6 +5,8 @@ import json
 import numpy as np
 from flask import Flask, jsonify
 from flask_cors import CORS
+import difflib 
+
 try:
     from flask_restplus import Namespace, Resource, Api
 except:
@@ -27,11 +29,26 @@ ns_conf = api.namespace('knowledgegraph', description='methods')
 
 parser = argparse.ArgumentParser(description='Argument Parser')
 parser.add_argument('--data', type=str, default="../../data", help='Data path')
+parser.add_argument('--rec_data', type=str, default="../../rec_data", help='Rec Data path')
 args = parser.parse_args()
 
 id_parser = reqparse.RequestParser()
 id_parser.add_argument('id', type=str, help='doc id')
 
+rec_parser = reqparse.RequestParser()
+rec_parser.add_argument('target_query', help='query word or paper id')
+rec_parser.add_argument('model_query', help='query rec model: hpe or bpr')
+
+
+
+def rec_loader(modelname, taskname):
+    train_dict = defaultdict(list)
+    filename = 'adkg.'+str(modelname)+'.rep.'+str(taskname)+'.rec'
+    with open(join( args.rec_data, filename), 'r') as f:
+        for line in f:
+            line = line.split("\t")
+            train_dict[str(line[0])] = line[1:]
+    return train_dict
 
 def pkl_loader():
     train_dict = {}
@@ -121,6 +138,50 @@ class id(Resource):
                 })
         except:
             return 'ID Not Found'
+
+@ns_conf.route('/p2w')
+class p2w(Resource):
+    @ns_conf.doc(parser=rec_parser)
+    def get(self):
+        args = rec_parser.parse_args()
+        paper_id = args['target_query']
+        model_word = args['model_query']
+        train_dict = rec_loader(model_word, "ui")
+        str_rec_list = [str(x).rstrip() for x in train_dict[paper_id] if not x.isnumeric()]
+        rec_result = ' '.join(str_rec_list)
+
+        return jsonify({
+                'given_id': paper_id,
+                'given_model': model_word,
+                'rec_result': rec_result
+            })
+
+
+@ns_conf.route('/w2w')
+class w2w(Resource):
+    @ns_conf.doc(parser=rec_parser)
+    def get(self):
+        args = rec_parser.parse_args()
+        key_word = args['target_query']
+        model_word = args['model_query']
+        train_dict = rec_loader(model_word, "ii")
+        train_dict_key = train_dict.keys()
+        
+        if key_word in train_dict_key:
+            key_word = key_word
+        else:
+            near_key_word = difflib.get_close_matches(key_word, train_dict_key)
+            key_word = near_key_word[0]
+            
+        str_rec_list = [str(x).rstrip() for x in train_dict[key_word] if not x.isnumeric()]
+        rec_result = ' '.join(str_rec_list)
+
+        return jsonify({
+                'given_word': key_word,
+                'given_model': model_word,
+                'rec_result': rec_result
+            })
+
 
 @ns_conf.route('/id2abs')
 class id2abs(Resource):
