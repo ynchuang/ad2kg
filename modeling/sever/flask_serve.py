@@ -86,26 +86,28 @@ class id(Resource):
             '''NIH URL'''
             infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
             key_buf = [x["@IdType"] for x in infolist]
-            nih_url = None
+            nih_url = ""
 
+            doi = ""
             if "doi" in key_buf:
                 idx = key_buf.index("doi")
                 doi = infolist[idx]["#text"]
 
+            pubmed = ""
             if "pubmed" in key_buf:
                 idx = key_buf.index("pubmed")
                 pubmed = infolist[idx]["#text"]
                 nih_url = "https://pubmed.ncbi.nlm.nih.gov/" + pubmed
 
             '''Download URL'''
-            download_url = None
+            download_url = ""
+            pmc_id = ""
             if "pmc" in key_buf:
                 idx = key_buf.index("pmc")
                 pmc_id = infolist[idx]["#text"]
                 download_url = "https://www.ncbi.nlm.nih.gov/pmc/articles/" + pmc_id + "/?report=reader"
 
-            if len(key_buf) == 4:
-                return jsonify({
+            return jsonify({
                     'given': args['id'],
                     'title': title_text,
                     'abstract': abs_text_str,
@@ -116,16 +118,6 @@ class id(Resource):
                     'keyword': keyword_list,
                     'download_url': download_url,
                     'nih_url': nih_url,
-                })
-            else:
-                return jsonify({
-                        'given': args['id'],
-                        'title': title_text,
-                        'abstract': abs_text_str,
-                        'author_list': author_dict,
-                        'keyword': keyword_list,
-                        'download_url': download_url,
-                        'nih_url': nih_url,
                 })
         except:
             return 'ID Not Found'
