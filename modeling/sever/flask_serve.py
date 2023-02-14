@@ -36,9 +36,8 @@ id_parser = reqparse.RequestParser()
 id_parser.add_argument('id', type=str, help='doc id')
 
 rec_parser = reqparse.RequestParser()
-rec_parser.add_argument('target_query', help='query word or paper id')
-rec_parser.add_argument('model_query', help='query rec model: hpe or bpr')
-
+rec_parser.add_argument('target_query', help='query word')
+rec_parser.add_argument('model_query', help='query rec model: air or hpe')
 
 
 def rec_loader(modelname, taskname):
@@ -139,21 +138,51 @@ class id(Resource):
         except:
             return 'ID Not Found'
 
-@ns_conf.route('/p2w')
-class p2w(Resource):
+@ns_conf.route('/w2p')
+class w2p(Resource):
     @ns_conf.doc(parser=rec_parser)
     def get(self):
+        doc_dict, id_to_idx = pkl_loader()
         args = rec_parser.parse_args()
-        paper_id = args['target_query']
+        key_word_org = args['target_query']
         model_word = args['model_query']
-        train_dict = rec_loader(model_word, "ui")
-        str_rec_list = [str(x).rstrip() for x in train_dict[paper_id] if not x.isnumeric()]
-        rec_result = ' '.join(str_rec_list)
+        train_dict = rec_loader(model_word, "iu")
+        train_dict_key = list(train_dict.keys())
+
+        if key_word_org in train_dict_key:
+            key_word = key_word_org
+        else:
+            near_key_word = difflib.get_close_matches(key_word_org, train_dict_key)
+            try:
+                key_word = near_key_word[0]
+            except:
+                key_word = 'Alzheimer’s'
+                near_key_word = difflib.get_close_matches(key_word, train_dict_key)
+                key_word = near_key_word[0]
+
+        str_rec_list = [str(x).rstrip() for x in train_dict[key_word]]
+
+        str_title_rec_list = []
+        for pid in train_dict[key_word]:
+            pid = str(pid).rstrip()
+            idx = int(id_to_idx[pid])
+            title_text_prefix = doc_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
+            if isinstance(title_text_prefix, str):
+                title_text = title_text_prefix
+            else:
+                try:
+                    title_text = title_text_prefix['#text'][:-1] + title_text_prefix['i']
+                except:
+                    title_text = title_text_prefix['#text']
+
+            str_title_rec_list.append(title_text)
+
 
         return jsonify({
-                'given_id': paper_id,
+                'given_word': key_word_org,
                 'given_model': model_word,
-                'rec_result': rec_result
+                'rec_id_result': str_rec_list,
+                'rec_title_result': str_title_rec_list
             })
 
 
@@ -162,24 +191,29 @@ class w2w(Resource):
     @ns_conf.doc(parser=rec_parser)
     def get(self):
         args = rec_parser.parse_args()
-        key_word = args['target_query']
+        key_word_org = args['target_query']
         model_word = args['model_query']
         train_dict = rec_loader(model_word, "ii")
         train_dict_key = train_dict.keys()
         
-        if key_word in train_dict_key:
-            key_word = key_word
+        if key_word_org in train_dict_key:
+            key_word = key_word_org
         else:
-            near_key_word = difflib.get_close_matches(key_word, train_dict_key)
-            key_word = near_key_word[0]
+            near_key_word = difflib.get_close_matches(key_word_org, train_dict_key)
+            try:
+                key_word = near_key_word[0]
+            except:
+                key_word = 'Alzheimer’s'
+                near_key_word = difflib.get_close_matches(key_word, train_dict_key)
+                key_word = near_key_word[0]
             
         str_rec_list = [str(x).rstrip() for x in train_dict[key_word] if not x.isnumeric()]
-        rec_result = ' '.join(str_rec_list)
+
 
         return jsonify({
-                'given_word': key_word,
+                'given_word': key_word_org,
                 'given_model': model_word,
-                'rec_result': rec_result
+                'rec_result': str_rec_list
             })
 
 
