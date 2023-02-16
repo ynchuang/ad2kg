@@ -87,7 +87,10 @@ class id(Resource):
             if isinstance(title_text_prefix, str):
                 title_text = title_text_prefix
             else:
-                title_text = title_text_prefix['#text'][:-1] + title_text_prefix['i']
+                try:
+                    title_text = title_text_prefix['#text'][:-1] + title_text_prefix['i']
+                except:
+                    title_text = title_text_prefix['#text']
 
             '''Author'''
             author_dict = train_dict[idx]['MedlineCitation']['Article']['AuthorList']['Author']
@@ -142,10 +145,10 @@ class id(Resource):
 class w2p(Resource):
     @ns_conf.doc(parser=rec_parser)
     def get(self):
-        doc_dict, id_to_idx = pkl_loader()
         args = rec_parser.parse_args()
         key_word_org = args['target_query']
         model_word = args['model_query']
+        doc_dict, id_to_idx = pkl_loader()
         train_dict = rec_loader(model_word, "iu")
         train_dict_key = list(train_dict.keys())
 
@@ -159,13 +162,24 @@ class w2p(Resource):
                 key_word = 'Alzheimer’s'
                 near_key_word = difflib.get_close_matches(key_word, train_dict_key)
                 key_word = near_key_word[0]
-
         str_rec_list = [str(x).rstrip() for x in train_dict[key_word]]
 
         str_title_rec_list = []
+        str_url_rec_list = []
         for pid in train_dict[key_word]:
             pid = str(pid).rstrip()
             idx = int(id_to_idx[pid])
+            
+            # Paper URL
+            infolist = doc_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
+            key_buf = [x["@IdType"] for x in infolist]
+            nih_url = ""
+            if "pubmed" in key_buf:
+                idx = key_buf.index("pubmed")
+                pubmed = infolist[idx]["#text"]
+                nih_url = "https://pubmed.ncbi.nlm.nih.gov/" + pubmed
+
+            # Paper Title
             title_text_prefix = doc_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
             if isinstance(title_text_prefix, str):
                 title_text = title_text_prefix
@@ -176,13 +190,15 @@ class w2p(Resource):
                     title_text = title_text_prefix['#text']
 
             str_title_rec_list.append(title_text)
+            str_url_rec_list.append(nih_url)
 
 
         return jsonify({
                 'given_word': key_word_org,
                 'given_model': model_word,
                 'rec_id_result': str_rec_list,
-                'rec_title_result': str_title_rec_list
+                'rec_title_result': str_title_rec_list,
+                'rec_url_result': str_url_rec_list
             })
 
 
