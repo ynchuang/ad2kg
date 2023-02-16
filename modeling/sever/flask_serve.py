@@ -175,8 +175,8 @@ class w2p(Resource):
             key_buf = [x["@IdType"] for x in infolist]
             nih_url = ""
             if "pubmed" in key_buf:
-                idx = key_buf.index("pubmed")
-                pubmed = infolist[idx]["#text"]
+                key_idx = key_buf.index("pubmed")
+                pubmed = infolist[key_idx]["#text"]
                 nih_url = "https://pubmed.ncbi.nlm.nih.gov/" + pubmed
 
             # Paper Title
