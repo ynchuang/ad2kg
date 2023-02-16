@@ -1,5 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import Neovis from "neovis.js/dist/neovis.js";
+import { Row, Col, Card, Input, Form, Button } from 'antd';
+
+const CYPHER = `WITH "{QUERY}" as query 
+MATCH p = (head)-[r]->(tail) 
+WHERE head.name STARTS WITH query or tail.name STARTS WITH query 
+RETURN p`;
 
 const Graph = ({ setNodeInfo }) => {
     const [query, setQuery] = useState('');
@@ -59,39 +65,55 @@ const Graph = ({ setNodeInfo }) => {
         });
     }, []);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(query);
-
-        if (query.length > 3) {
-            console.log("queryWithCypher")
-            neoVis.current.renderWithCypher(query);
-        } else {
-            console.log("reload");
-            neoVis.current.reload();
-        }
+    const onFinish = (values) => {
+        setQuery(values.input);
+        let cypher = CYPHER.replace("{QUERY}", values.input);
+        console.log("queryWithCypher: ", cypher);
+        neoVis.current.renderWithCypher(cypher);
     };
 
     return (
         <>
-            <div className="row">
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Query:
-                        <input type="text" value={query} onChange={(event) => setQuery(event.target.value)} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
-            <div
-                id="graph-id"
-                ref={visRef}
-                style={{
-                    width: `100%`,
-                    height: `800px`,
-                    backgroundColor: `"#d3d3d3"`,
-                }}
-            />
+            <Card>
+                <Row>
+                    <Col span={24}>
+                        <Row>
+                            <Col span={24}>
+                                <Form
+                                    name="query"
+                                    onFinish={onFinish}
+                                    style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <Form.Item
+                                        label="Input"
+                                        name="input"
+                                        style={{ marginBottom: 0 }}>
+                                        <Input style={{ width: 200 }} />
+                                    </Form.Item>
+                                    <Form.Item style={{ marginBottom: 0 }}>
+                                        <Button type="primary" htmlType="Submit">
+                                            Submit
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <div
+                                    id="graph-id"
+                                    ref={visRef}
+                                    style={{
+                                        width: `100%`,
+                                        height: `50vh`,
+                                        backgroundColor: `"#d3d3d3"`,
+                                    }}
+                                >
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Card>
         </>
     );
 }
