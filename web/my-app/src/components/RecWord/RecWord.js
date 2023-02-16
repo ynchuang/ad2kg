@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Spin, Typography, Collapse } from "antd";
 import axios from 'axios';
+import { getOrDefault } from '../../utils/utils'
 
 const { Panel } = Collapse;
 const { Paragraph } = Typography;
@@ -21,10 +22,8 @@ const RecWord = ({ query }) => {
                 model_query: "air"
             }
         }).then(res => {
-            console.log(query)
             const d = res.data;
-            setKeywords(d.rec_result);
-            console.log(d.rec_result);
+            setKeywords(getOrDefault(d.rec_result, []));
             setLoading(false);
         }).catch(function (error) {
             setKeywords([]);

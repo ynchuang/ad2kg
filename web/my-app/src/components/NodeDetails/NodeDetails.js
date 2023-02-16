@@ -43,8 +43,7 @@ const NodeDetails = ({ nodeInfo }) => {
             }
         }).then(res => {
             const d = res.data;
-            setDocInfo(d);
-            console.log(d);
+            setDocInfo(checkResp(d));
             setLoading(false);
         }).catch(function (error) {
             setDocInfo(DefaultDocInfo);
@@ -115,5 +114,41 @@ function renderAuthorList(authors) {
     ).join(", ");
 }
 
+function checkResp(resp) {
+    let out = DefaultDocInfo;
+
+    if (resp.given !== undefined) {
+        out.given = resp.given
+    }
+    if (resp.abstract !== undefined) {
+        out.abstract = resp.abstract
+    }
+    if (resp.title !== undefined) {
+        out.title = resp.title
+    }
+    if (resp.author_list !== undefined) {
+        out.author_list = resp.author_list
+    }
+    if (resp.keyword !== undefined) {
+        out.keyword = resp.keyword
+    }
+    if (resp.download_url !== undefined) {
+        out.download_url = resp.download_url
+    }
+    if (resp.nih_url !== undefined) {
+        out.nih_url = resp.nih_url
+    }
+    if (resp.pmid !== undefined) {
+        out.pmid = resp.pmid
+    }
+    if (resp.pmcid !== undefined) {
+        out.pmcid = resp.pmcid
+    }
+    if (resp.doi !== undefined) {
+        out.doi = resp.doi
+    }
+
+    return out;
+}
 
 export default NodeDetails;

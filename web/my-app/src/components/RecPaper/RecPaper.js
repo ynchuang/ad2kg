@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { List, Typography, Collapse, Spin } from "antd";
 import axios from 'axios';
+import { getOrDefault } from '../../utils/utils'
 
 const { Panel } = Collapse;
 const { Text, Paragraph } = Typography;
@@ -22,8 +23,7 @@ const RecPaper = ({ query }) => {
             }
         }).then(res => {
             const d = res.data;
-            setTitles(d.rec_title_result);
-            // console.log(d.rec_result);
+            setTitles(getOrDefault(d.rec_title_result, []));
             setLoading(false);
         }).catch(function (error) {
             setTitles([]);
