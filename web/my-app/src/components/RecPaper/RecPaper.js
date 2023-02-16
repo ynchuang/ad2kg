@@ -8,7 +8,7 @@ const { Text, Paragraph } = Typography;
 
 const RecPaper = ({ query }) => {
     const [loading, setLoading] = useState(false);
-    const [titles, setTitles] = useState([])
+    const [papers, setPapers] = useState([])
 
     useEffect(() => {
         if (query === "") {
@@ -23,10 +23,10 @@ const RecPaper = ({ query }) => {
             }
         }).then(res => {
             const d = res.data;
-            setTitles(getOrDefault(d.rec_title_result, []));
+            setPapers(extractPapers(d));
             setLoading(false);
         }).catch(function (error) {
-            setTitles([]);
+            setPapers([]);
             console.log(error.toJSON());
             setLoading(false);
         })
@@ -39,10 +39,10 @@ const RecPaper = ({ query }) => {
                     <Spin spinning={loading}>
                         <List
                             bordered
-                            dataSource={titles}
+                            dataSource={papers}
                             renderItem={(item) => (
                                 <List.Item>
-                                    {item}
+                                    {<a href={item.url}>{item.title}</a>}
                                 </List.Item>
                             )}
                         />
@@ -52,5 +52,14 @@ const RecPaper = ({ query }) => {
         </>
     );
 };
+
+function extractPapers(data) {
+    let titles = getOrDefault(data.rec_title_result, []);
+    let urls = getOrDefault(data.rec_url_result, []);
+
+    return titles.map(function (t, i) {
+        return { title: t, url: getOrDefault(urls[i], "") };
+    })
+}
 
 export default RecPaper;
