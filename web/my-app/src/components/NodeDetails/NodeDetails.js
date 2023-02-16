@@ -75,10 +75,18 @@ const NodeDetails = ({ nodeInfo }) => {
 };
 
 function renderKeywordList(keywords) {
+    if (keywords === undefined) {
+        return "";
+    }
+
     return keywords.join(", ");
 }
 
 function renderAuthorList(authors) {
+    if (authors === undefined) {
+        return "";
+    }
+
     return authors.map((author) =>
         author.ForeName + author.LastName
     ).join(", ");
