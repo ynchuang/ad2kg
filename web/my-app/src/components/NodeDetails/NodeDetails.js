@@ -37,7 +37,7 @@ const NodeDetails = ({ nodeInfo }) => {
             }
         }
 
-        axios.get(`http://127.0.0.1:5566/knowledgegraph/details`, {
+        axios.get(`knowledgegraph/details`, {
             params: {
                 id: id
             }

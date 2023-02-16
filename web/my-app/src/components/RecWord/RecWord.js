@@ -16,7 +16,7 @@ const RecWord = ({ query }) => {
         }
 
         setLoading(true);
-        axios.get(`http://127.0.0.1:5566/knowledgegraph/w2w`, {
+        axios.get(`knowledgegraph/w2w`, {
             params: {
                 target_query: query,
                 model_query: "air"

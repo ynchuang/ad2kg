@@ -5,12 +5,14 @@ import Graph from '../Graph/Graph';
 import NodeDetails from '../NodeDetails/NodeDetails';
 import RecPaper from '../RecPaper/RecPaper';
 import RecWord from '../RecWord/RecWord'
-
+import axios from 'axios';
 import { DefaultDocInfo } from '../NodeDetails/NodeDetails'
 
 function App() {
   const [nodeInfo, setNodeInfo] = useState(DefaultDocInfo);
   const [query, setQuery] = useState('');
+
+  axios.defaults.baseURL = process.env.REACT_APP_API;
 
   return (
     <div className="App">

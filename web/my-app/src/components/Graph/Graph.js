@@ -14,9 +14,9 @@ const Graph = ({ setNodeInfo, query, setQuery }) => {
     useEffect(() => {
         const config = {
             container_id: visRef.current.id,
-            server_url: "bolt://localhost:7687",
-            server_user: "neo4j",
-            server_password: "neo4j1",
+            server_url: process.env.REACT_APP_NEO4J_URL,
+            server_user: process.env.REACT_APP_NEO4J_USER,
+            server_password: process.env.REACT_APP_NEO4J_PASSWORD,
             labels: {
                 "NER_Bio": {
                     caption: "name",

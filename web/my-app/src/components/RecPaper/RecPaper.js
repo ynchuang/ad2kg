@@ -16,7 +16,7 @@ const RecPaper = ({ query }) => {
         }
 
         setLoading(true);
-        axios.get(`http://127.0.0.1:5566/knowledgegraph/w2p`, {
+        axios.get(`knowledgegraph/w2p`, {
             params: {
                 target_query: query,
                 model_query: "air"
