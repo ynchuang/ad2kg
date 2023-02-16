@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, Typography, Collapse } from "antd";
+import { Spin, Typography, Collapse } from "antd";
 import axios from 'axios';
 
 const { Panel } = Collapse;
@@ -10,6 +10,10 @@ const RecWord = ({ query }) => {
     const [keywords, setKeywords] = useState([])
 
     useEffect(() => {
+        if (query === "") {
+            return;
+        }
+
         setLoading(true);
         axios.get(`http://127.0.0.1:5566/knowledgegraph/w2w`, {
             params: {
@@ -33,9 +37,11 @@ const RecWord = ({ query }) => {
 
     return (
         <>
-            <Collapse defaultActiveKey={['1']}>
+            <Collapse accordion>
                 <Panel header="Rec Word" key="1">
-                    <Paragraph>{keywordListItems}</Paragraph>
+                    <Spin spinning={loading}>
+                        <Paragraph>{keywordListItems}</Paragraph>
+                    </Spin>
                 </Panel>
             </Collapse>
         </>

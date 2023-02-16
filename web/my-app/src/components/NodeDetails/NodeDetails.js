@@ -22,9 +22,13 @@ const NodeDetails = ({ nodeInfo }) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (nodeInfo.given === "") {
+            return;
+        }
+
         setLoading(true);
         let id = 0;
-        if (nodeInfo.group == "Paper") {
+        if (nodeInfo.group === "Paper") {
             id = nodeInfo.label;
         } else {
             const myArray = /Source:<\/strong> (\d+)<br>/g.exec(nodeInfo.title);
@@ -53,8 +57,14 @@ const NodeDetails = ({ nodeInfo }) => {
     const keywordListItems = renderKeywordList(docInfo.keyword);
     const authorListItems = renderAuthorList(docInfo.author_list);
 
-    return (
-        <>
+    let detailsCard;
+    if (nodeInfo.given === "") {
+        detailsCard =
+            <Spin spinning={loading}>
+                <Card><Empty /></Card>
+            </Spin>
+    } else {
+        detailsCard =
             <Spin spinning={loading}>
                 <Card>
                     <Space wrap>
@@ -78,6 +88,11 @@ const NodeDetails = ({ nodeInfo }) => {
                     <Paragraph>{docInfo.abstract}</Paragraph>
                 </Card>
             </Spin>
+    }
+
+    return (
+        <>
+            {detailsCard}
         </>
     );
 };

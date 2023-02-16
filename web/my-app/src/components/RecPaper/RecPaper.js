@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, Typography, Collapse } from "antd";
+import { List, Typography, Collapse, Spin } from "antd";
 import axios from 'axios';
 
 const { Panel } = Collapse;
@@ -10,6 +10,10 @@ const RecPaper = ({ query }) => {
     const [titles, setTitles] = useState([])
 
     useEffect(() => {
+        if (query === "") {
+            return;
+        }
+
         setLoading(true);
         axios.get(`http://127.0.0.1:5566/knowledgegraph/w2p`, {
             params: {
@@ -30,17 +34,19 @@ const RecPaper = ({ query }) => {
 
     return (
         <>
-            <Collapse defaultActiveKey={['1']}>
+            <Collapse accordion>
                 <Panel header="Rec Paper" key="1">
-                    <List
-                        bordered
-                        dataSource={titles}
-                        renderItem={(item) => (
-                            <List.Item>
-                                {item}
-                            </List.Item>
-                        )}
-                    />
+                    <Spin spinning={loading}>
+                        <List
+                            bordered
+                            dataSource={titles}
+                            renderItem={(item) => (
+                                <List.Item>
+                                    {item}
+                                </List.Item>
+                            )}
+                        />
+                    </Spin>
                 </Panel>
             </Collapse>
         </>
