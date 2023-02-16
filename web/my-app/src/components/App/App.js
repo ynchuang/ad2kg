@@ -6,15 +6,11 @@ import NodeDetails from '../NodeDetails/NodeDetails';
 import RecPaper from '../RecPaper/RecPaper';
 import RecWord from '../RecWord/RecWord'
 
+import { DefaultDocInfo } from '../NodeDetails/NodeDetails'
+
 function App() {
-  const [nodeInfo, setNodeInfo] = useState({
-    group: "",
-    id: 0,
-    label: "",
-    shape: "",
-    title: "",
-    value: 0,
-  });
+  const [nodeInfo, setNodeInfo] = useState(DefaultDocInfo);
+  const [query, setQuery] = useState('');
 
   return (
     <div className="App">
@@ -23,17 +19,17 @@ function App() {
           <Col span={14}>
             <Row>
               <Col span={24}>
-                <Graph setNodeInfo={setNodeInfo} />
+                <Graph setNodeInfo={setNodeInfo} query={query} setQuery={setQuery} />
               </Col>
             </Row>
             <Row>
               <Col span={24}>
-                <RecPaper />
+                <RecPaper query={query} />
               </Col>
             </Row>
             <Row>
               <Col span={24}>
-                <RecWord />
+                <RecWord query={query} />
               </Col>
             </Row>
           </Col>

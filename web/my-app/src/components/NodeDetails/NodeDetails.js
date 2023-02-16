@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, List, Space, Button, Typography } from "antd";
+import { Card, List, Space, Button, Typography, Spin, Empty } from "antd";
 
 const { Title, Paragraph } = Typography;
 
-const defaultDocInfo = {
+export const DefaultDocInfo = {
     "given": "",
     "abstract": "",
     "title": "",
@@ -12,12 +12,17 @@ const defaultDocInfo = {
     "keyword": [],
     "download_url": "",
     "nih_url": "",
+    "pmid": "",
+    "pmcid": "",
+    "doi": ""
 }
 
 const NodeDetails = ({ nodeInfo }) => {
-    const [docInfo, setDocInfo] = useState(defaultDocInfo);
+    const [docInfo, setDocInfo] = useState(DefaultDocInfo);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         let id = 0;
         if (nodeInfo.group == "Paper") {
             id = nodeInfo.label;
@@ -36,9 +41,11 @@ const NodeDetails = ({ nodeInfo }) => {
             const d = res.data;
             setDocInfo(d);
             console.log(d);
+            setLoading(false);
         }).catch(function (error) {
-            setDocInfo(defaultDocInfo);
+            setDocInfo(DefaultDocInfo);
             console.log(error.toJSON());
+            setLoading(false);
         })
     }, [nodeInfo])
 
@@ -48,28 +55,29 @@ const NodeDetails = ({ nodeInfo }) => {
 
     return (
         <>
-            <Card>
-                <Space wrap>
-                    <Button>Like</Button>
-                    <Button>Dislike</Button>
-                    <Button>Report</Button>
-                </Space>
-                <List>
-                    <Title level={4}>{docInfo.title}</Title>
-                    <Paragraph>{authorListItems}</Paragraph>
-                    <Paragraph>PMID: 123</Paragraph>
-                    <Paragraph>PMCID: 123</Paragraph>
-                    <Paragraph>DOI: 123</Paragraph>
-                    <Paragraph>Keyword: {keywordListItems}</Paragraph>
-                </List>
-                <Space wrap>
-                    <Button>Full text links</Button>
-                    <Button>Cite</Button>
-                </Space>
-                <Title level={4}>Abstract</Title>
-                <Paragraph>{docInfo.abstract}</Paragraph>
-            </Card>
-
+            <Spin spinning={loading}>
+                <Card>
+                    <Space wrap>
+                        <Button>Like</Button>
+                        <Button>Dislike</Button>
+                        <Button>Report</Button>
+                    </Space>
+                    <List>
+                        <Title level={4}>{docInfo.title}</Title>
+                        <Paragraph>{authorListItems}</Paragraph>
+                        <Paragraph>PMID: {docInfo.pmid}</Paragraph>
+                        <Paragraph>PMCID: {docInfo.pmcid}</Paragraph>
+                        <Paragraph>DOI: {docInfo.doi}</Paragraph>
+                        <Paragraph>Keyword: {keywordListItems}</Paragraph>
+                    </List>
+                    <Space wrap>
+                        <Button href={docInfo.download_url}>Full text links</Button>
+                        <Button>Cite</Button>
+                    </Space>
+                    <Title level={4}>Abstract</Title>
+                    <Paragraph>{docInfo.abstract}</Paragraph>
+                </Card>
+            </Spin>
         </>
     );
 };

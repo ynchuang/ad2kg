@@ -7,8 +7,7 @@ MATCH p = (head)-[r]->(tail)
 WHERE head.name STARTS WITH query or tail.name STARTS WITH query 
 RETURN p`;
 
-const Graph = ({ setNodeInfo }) => {
-    const [query, setQuery] = useState('');
+const Graph = ({ setNodeInfo, query, setQuery }) => {
     const visRef = useRef();
     const neoVis = useRef();
 
