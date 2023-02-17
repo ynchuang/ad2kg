@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, List, Space, Button, Typography, Spin, Empty } from "antd";
+import { Card, List, Space, Button, Typography, Spin, Empty, Tag } from "antd";
+import { LikeOutlined, DislikeOutlined, LinkOutlined, MailOutlined } from '@ant-design/icons';
 
 const { Title, Paragraph } = Typography;
+
+const NODE_TYPE_EMPTY = 0
+const NODE_TYPE_PAPER = 1
+const NODE_TYPE_WORD = 2
 
 export const DefaultDocInfo = {
     "given": "",
@@ -20,6 +25,8 @@ export const DefaultDocInfo = {
 const NodeDetails = ({ nodeInfo }) => {
     const [docInfo, setDocInfo] = useState(DefaultDocInfo);
     const [loading, setLoading] = useState(false);
+    const [nodeType, setNodeType] = useState(NODE_TYPE_EMPTY);
+    const [nodeDisplayText, setNodeDisplayText] = useState('')
 
     useEffect(() => {
         if (nodeInfo.given === "") {
@@ -27,19 +34,28 @@ const NodeDetails = ({ nodeInfo }) => {
         }
 
         setLoading(true);
-        let id = 0;
+        let paperId = 0;
         if (nodeInfo.group === "Paper") {
-            id = nodeInfo.label;
+            paperId = nodeInfo.label;
+            setNodeType(NODE_TYPE_PAPER)
+            setNodeDisplayText(paperId)
         } else {
-            const myArray = /Source:<\/strong> (\d+)<br>/g.exec(nodeInfo.title);
-            if (myArray && myArray[1] !== undefined) {
-                id = myArray[1]
+            // EXAMPLE: "<strong>name:</strong> CSF biomar...<br><strong>Source:</strong> 35061102<br><strong>id:</strong> CSF biomarker levels<br>"
+            const regexPaperId = /Source:<\/strong> (\d+)<br>/g.exec(nodeInfo.title);
+            if (regexPaperId && regexPaperId[1] !== undefined) {
+                paperId = regexPaperId[1]
+                setNodeType(NODE_TYPE_WORD)
+            }
+
+            const regexDisplayText = /id:<\/strong> (.*)<br>/g.exec(nodeInfo.title);
+            if (regexDisplayText && regexDisplayText[1] !== undefined) {
+                setNodeDisplayText(regexDisplayText[1])
             }
         }
 
         axios.get(`knowledgegraph/details`, {
             params: {
-                id: id
+                id: paperId
             }
         }).then(res => {
             const d = res.data;
@@ -56,6 +72,18 @@ const NodeDetails = ({ nodeInfo }) => {
     const keywordListItems = renderKeywordList(docInfo.keyword);
     const authorListItems = renderAuthorList(docInfo.author_list);
 
+    let nodeTypeTag;
+    if (nodeType === NODE_TYPE_PAPER) {
+        nodeTypeTag = <Tag color="gold">Paper</Tag>
+    } else if (nodeType === NODE_TYPE_WORD) {
+        nodeTypeTag = <Tag color="blue">Word</Tag>
+    }
+
+    let nodeDisplayTextTag;
+    if (nodeType === NODE_TYPE_PAPER || nodeType === NODE_TYPE_WORD) {
+        nodeDisplayTextTag = <Tag color="default">{nodeDisplayText}</Tag>
+    }
+
     let detailsCard;
     if (nodeInfo.given === "") {
         detailsCard =
@@ -66,10 +94,16 @@ const NodeDetails = ({ nodeInfo }) => {
         detailsCard =
             <Spin spinning={loading}>
                 <Card>
-                    <Space wrap>
-                        <Button>Like</Button>
-                        <Button>Dislike</Button>
-                        <Button>Report</Button>
+                    <Space direction="vertical">
+                        <Space wrap>
+                            <Button icon={<LikeOutlined />}>Like</Button>
+                            <Button icon={<DislikeOutlined />}>Dislike</Button>
+                            <Button icon={<MailOutlined />} href="mailto:email@example.com">Report</Button>
+                        </Space>
+                        <Space wrap>
+                            {nodeTypeTag}
+                            {nodeDisplayTextTag}
+                        </Space>
                     </Space>
                     <List>
                         <Title level={4}>{docInfo.title}</Title>
@@ -80,8 +114,8 @@ const NodeDetails = ({ nodeInfo }) => {
                         <Paragraph>Keyword: {keywordListItems}</Paragraph>
                     </List>
                     <Space wrap>
-                        <Button href={docInfo.download_url}>Full text links</Button>
-                        <Button>Cite</Button>
+                        <Button href={docInfo.download_url} icon={<LinkOutlined />}>Full text links</Button>
+                        {/* <Button>Cite</Button> */}
                     </Space>
                     <Title level={4}>Abstract</Title>
                     <Paragraph>{docInfo.abstract}</Paragraph>

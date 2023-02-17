@@ -37,7 +37,7 @@ const RecWord = ({ query }) => {
     return (
         <>
             <Collapse accordion>
-                <Panel header="Rec Word" key="1">
+                <Panel header="Queries You Can Start From" key="1">
                     <Spin spinning={loading}>
                         <Paragraph>{keywordListItems}</Paragraph>
                     </Spin>

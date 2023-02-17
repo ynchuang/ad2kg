@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Neovis from "neovis.js/dist/neovis.js";
-import { Row, Col, Card, Input, Form, Button } from 'antd';
+import { Row, Col, Card, Input, Form, Button, Space } from 'antd';
 
 const CYPHER = `WITH "{QUERY}" as query 
 MATCH p = (head)-[r]->(tail) 
@@ -78,22 +78,24 @@ const Graph = ({ setNodeInfo, query, setQuery }) => {
                     <Col span={24}>
                         <Row>
                             <Col span={24}>
-                                <Form
-                                    name="query"
-                                    onFinish={onFinish}
-                                    style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                    <Form.Item
-                                        label="Input"
-                                        name="input"
-                                        style={{ marginBottom: 0 }}>
-                                        <Input style={{ width: 200 }} />
-                                    </Form.Item>
-                                    <Form.Item style={{ marginBottom: 0 }}>
-                                        <Button type="primary" htmlType="Submit">
-                                            Submit
-                                        </Button>
-                                    </Form.Item>
-                                </Form>
+                                <Space wrap>
+                                    <Form
+                                        layout="inline"
+                                        name="query"
+                                        onFinish={onFinish}
+                                        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <Form.Item
+                                            name="input"
+                                            style={{ marginBottom: 0 }}>
+                                            <Input style={{ width: 200 }} />
+                                        </Form.Item>
+                                        <Form.Item style={{ marginBottom: 0 }}>
+                                            <Button type="primary" htmlType="Submit">
+                                                Find Relationship
+                                            </Button>
+                                        </Form.Item>
+                                    </Form>
+                                </Space>
                             </Col>
                         </Row>
                         <Row>

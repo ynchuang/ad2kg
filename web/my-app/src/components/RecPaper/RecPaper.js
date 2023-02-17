@@ -35,7 +35,7 @@ const RecPaper = ({ query }) => {
     return (
         <>
             <Collapse accordion>
-                <Panel header="Rec Paper" key="1">
+                <Panel header="Paper You May Like" key="1">
                     <Spin spinning={loading}>
                         <List
                             bordered
