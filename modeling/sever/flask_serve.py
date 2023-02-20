@@ -79,6 +79,8 @@ class id(Resource):
                     subtext = subtext["#text"]
                     subtext += " "
                     abs_text_str += subtext
+                if isinstance(abs_text_str, list):
+                    abs_text_str = abs_text_str["#text"]
             else:
                 abs_text_str = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
 
@@ -101,6 +103,8 @@ class id(Resource):
             if "KeywordList" in train_dict[idx]['MedlineCitation'].keys():
                 for keyword_dict in train_dict[idx]['MedlineCitation']["KeywordList"]["Keyword"]:
                     keyword_list.append(keyword_dict["#text"])
+            if len(keyword_list) == 0:
+                keyword_list.append("No keywords")
 
             '''NIH URL'''
             infolist = train_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
@@ -196,9 +200,9 @@ class w2p(Resource):
         return jsonify({
                 'given_word': key_word_org,
                 'given_model': model_word,
-                'rec_id_result': str_rec_list,
-                'rec_title_result': str_title_rec_list,
-                'rec_url_result': str_url_rec_list
+                'rec_id_result': str_rec_list[:10],
+                'rec_title_result': str_title_rec_list[:10],
+                'rec_url_result': str_url_rec_list[:10]
             })
 
 
@@ -223,13 +227,13 @@ class w2w(Resource):
                 near_key_word = difflib.get_close_matches(key_word, train_dict_key)
                 key_word = near_key_word[0]
             
-        str_rec_list = [str(x).rstrip() for x in train_dict[key_word] if not x.isnumeric()]
+        str_rec_list = [str(x).rstrip().replace("-", "") for x in train_dict[key_word] if not x.isnumeric()]
 
 
         return jsonify({
                 'given_word': key_word_org,
                 'given_model': model_word,
-                'rec_result': str_rec_list
+                'rec_result': str_rec_list[:20]
             })
 
 
