@@ -228,7 +228,7 @@ class w2w(Resource):
                 near_key_word = difflib.get_close_matches(key_word, train_dict_key)
                 key_word = near_key_word[0]
 
-        str_rec_list = [str(x).rstrip().replace("-", "") for x in train_dict[key_word] if not x.isnumeric()]
+        str_rec_list = [str(x).rstrip().replace("-", " ") for x in train_dict[key_word] if not x.isnumeric()]
 
 
         return jsonify({
