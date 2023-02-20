@@ -5,7 +5,7 @@ import json
 import numpy as np
 from flask import Flask, jsonify
 from flask_cors import CORS
-import difflib 
+import difflib
 
 try:
     from flask_restplus import Namespace, Resource, Api
@@ -79,10 +79,11 @@ class id(Resource):
                     subtext = subtext["#text"]
                     subtext += " "
                     abs_text_str += subtext
-                if isinstance(abs_text_str, list):
-                    abs_text_str = abs_text_str["#text"]
             else:
                 abs_text_str = train_dict[idx]['MedlineCitation']['Article']['Abstract']['AbstractText']
+            
+            if not isinstance(abs_text_str, str):
+                abs_text_str = abs_text_str["#text"]
 
             '''Title'''
             title_text_prefix = train_dict[idx]['MedlineCitation']['Article']['ArticleTitle']
@@ -173,7 +174,7 @@ class w2p(Resource):
         for pid in train_dict[key_word]:
             pid = str(pid).rstrip()
             idx = int(id_to_idx[pid])
-            
+
             # Paper URL
             infolist = doc_dict[idx]['PubmedData']['ArticleIdList']['ArticleId']
             key_buf = [x["@IdType"] for x in infolist]
@@ -215,7 +216,7 @@ class w2w(Resource):
         model_word = args['model_query']
         train_dict = rec_loader(model_word, "ii")
         train_dict_key = train_dict.keys()
-        
+
         if key_word_org in train_dict_key:
             key_word = key_word_org
         else:
@@ -226,7 +227,7 @@ class w2w(Resource):
                 key_word = 'Alzheimer’s'
                 near_key_word = difflib.get_close_matches(key_word, train_dict_key)
                 key_word = near_key_word[0]
-            
+
         str_rec_list = [str(x).rstrip().replace("-", "") for x in train_dict[key_word] if not x.isnumeric()]
 
 
