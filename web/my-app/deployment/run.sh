@@ -9,6 +9,7 @@ echo $BASEDIR
 apt-get install -y nginx
 
 cp deployment/my-app.conf /etc/nginx/sites-available/my-app.conf
+rm -f /etc/nginx/sites-enabled/my-app.conf
 ln -s /etc/nginx/sites-available/my-app.conf /etc/nginx/sites-enabled/
 
 mkdir -p /var/www/my-app/build
