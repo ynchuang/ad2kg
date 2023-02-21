@@ -5,7 +5,7 @@ set -euxo pipefail
 BASEDIR=$(dirname $0)
 echo $BASEDIR
 
-# npm run build
+npm run build
 apt-get install -y nginx
 
 cp deployment/my-app.conf /etc/nginx/sites-available/my-app.conf
