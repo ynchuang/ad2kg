@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import Neovis from "neovis.js/dist/neovis.js";
 import { Row, Col, Card, Input, Form, Button, Space } from 'antd';
+import logo from '../../logo.png';
 
-const CYPHER = `WITH "(?i)"+"{QUERY}" as query 
+const CYPHER = `WITH "(?i).*"+"{QUERY}"+".*" as query
 MATCH p = (head)-[r]->(tail) 
 WHERE head.id contains query or tail.id contains query or tail.id =~query or head.id =~query
 RETURN p`;
@@ -79,6 +80,7 @@ const Graph = ({ setNodeInfo, query, setQuery }) => {
                         <Row>
                             <Col span={24}>
                                 <Space wrap>
+                                    <img src={logo} alt="Logo" style={{ width: "50px", height: "auto" }} />
                                     <Form
                                         layout="inline"
                                         name="query"
