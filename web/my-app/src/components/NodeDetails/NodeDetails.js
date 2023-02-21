@@ -148,7 +148,7 @@ function renderAuthorList(authors) {
     }
 
     return authors.map((author) =>
-        author.ForeName + author.LastName
+        author.ForeName + " " + author.LastName
     ).join(", ");
 }
 
