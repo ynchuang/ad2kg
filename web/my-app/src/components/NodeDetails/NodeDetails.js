@@ -84,6 +84,10 @@ const NodeDetails = ({ nodeInfo }) => {
         nodeDisplayTextTag = <Tag color="default">{nodeDisplayText}</Tag>
     }
 
+    const handleLinkClick = () => {
+        window.open(docInfo.download_url, '_blank');
+    };
+
     let detailsCard;
     if (nodeInfo.given === "") {
         detailsCard =
@@ -98,7 +102,7 @@ const NodeDetails = ({ nodeInfo }) => {
                         <Space wrap>
                             <Button icon={<LikeOutlined />}>Like</Button>
                             <Button icon={<DislikeOutlined />}>Dislike</Button>
-                            <Button icon={<MailOutlined />} href="mailto:email@example.com">Report</Button>
+                            <Button icon={<MailOutlined />} href="mailto:yc146@rice.edu">Report</Button>
                         </Space>
                         <Space wrap>
                             {nodeTypeTag}
@@ -114,7 +118,7 @@ const NodeDetails = ({ nodeInfo }) => {
                         <Paragraph>Keyword: {keywordListItems}</Paragraph>
                     </List>
                     <Space wrap>
-                        <Button href={docInfo.download_url} icon={<LinkOutlined />}>Full text links</Button>
+                        <Button onClick={handleLinkClick} icon={<LinkOutlined />}>Full text links</Button>
                         {/* <Button>Cite</Button> */}
                     </Space>
                     <Title level={4}>Abstract</Title>
