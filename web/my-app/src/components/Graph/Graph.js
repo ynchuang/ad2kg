@@ -5,7 +5,7 @@ import logo from '../../logo.png';
 
 const CYPHER = `WITH "(?i).*"+"{QUERY}"+".*" as query
 MATCH p = (head)-[r]->(tail) 
-WHERE head.id contains query or tail.id contains query or tail.id =~query or head.id =~query
+WHERE head.id contains query or tail.id contains query or tail.id =~query or head.id =~query or head.id = toInteger("{QUERY}") or tail.id = toInteger("{QUERY}")
 RETURN p`;
 
 const Graph = ({ setNodeInfo, query, setQuery }) => {
