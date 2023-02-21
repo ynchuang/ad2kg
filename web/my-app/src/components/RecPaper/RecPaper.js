@@ -42,7 +42,7 @@ const RecPaper = ({ query }) => {
                             dataSource={papers}
                             renderItem={(item) => (
                                 <List.Item>
-                                    {<a href={item.url}>{item.title}</a>}
+                                    {<a href={item.url}>&lt;{item.id}&gt; {item.title}</a>}
                                 </List.Item>
                             )}
                         />
@@ -54,11 +54,12 @@ const RecPaper = ({ query }) => {
 };
 
 function extractPapers(data) {
+    let ids = getOrDefault(data.rec_id_result, []);
     let titles = getOrDefault(data.rec_title_result, []);
     let urls = getOrDefault(data.rec_url_result, []);
 
-    return titles.map(function (t, i) {
-        return { title: t, url: getOrDefault(urls[i], "") };
+    return ids.map(function (id, i) {
+        return { id: id, title: getOrDefault(titles[i], ""), url: getOrDefault(urls[i], "") };
     })
 }
 
