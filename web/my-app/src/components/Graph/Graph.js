@@ -67,7 +67,7 @@ const Graph = ({ setNodeInfo, query, setQuery }) => {
 
     const onFinish = (values) => {
         setQuery(values.input);
-        let cypher = CYPHER.replace("{QUERY}", values.input);
+        let cypher = CYPHER.replace(new RegExp('{QUERY}', 'g'), values.input);
         console.log("queryWithCypher: ", cypher);
         neoVis.current.renderWithCypher(cypher);
     };
