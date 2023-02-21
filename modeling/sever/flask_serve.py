@@ -201,9 +201,9 @@ class w2p(Resource):
         return jsonify({
                 'given_word': key_word_org,
                 'given_model': model_word,
-                'rec_id_result': str_rec_list[:10],
-                'rec_title_result': str_title_rec_list[:10],
-                'rec_url_result': str_url_rec_list[:10]
+                'rec_id_result': str_rec_list[:6],
+                'rec_title_result': str_title_rec_list[:6],
+                'rec_url_result': str_url_rec_list[:6]
             })
 
 
