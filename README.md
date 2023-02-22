@@ -1,4 +1,4 @@
-# Ad2kg
+# DiscoverPath: A Knowledge Refinement and Retrieval System for Interdisciplinarity on Biomedical Research
 
 This is a repository for the review SIGIR'23 demo paper.
 
