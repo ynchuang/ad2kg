@@ -1,6 +1,6 @@
 # Ad2kg
 
-This is a repo for SIGIR demo paper. To visit our demo website, please refer to [DiscoverPath.top](http://www.discoverpath.top/).
+This is a repository for the review SIGIR'23 demo paper. To visit our demo website, please refer to [DiscoverPath.top](http://www.discoverpath.top/).
 
 ## Repository structure
 
