@@ -1,6 +1,6 @@
 # Ad2kg
 
-This is a project of Alzheimer's disease on knowledge graph
+This is a repo for SIGIR demo paper
 
 ## Repository structure
 
@@ -11,10 +11,10 @@ This is a project of Alzheimer's disease on knowledge graph
 
 ## Planning features
 
-- [ ] API construction
+- [ v ] API construction
     - [ v ] Basic functionality
-    - [ ] Recommendation/IR Moudule
-- [ ] Web construction
+    - [ v ] Recommendation/IR Moudule
+- [ v ] Web construction
 
 ## Environment
 -  OpenJDK 1.8
