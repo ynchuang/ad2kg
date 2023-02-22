@@ -1,6 +1,6 @@
 # Ad2kg
 
-This is a repo for SIGIR demo paper
+This is a repo for SIGIR demo paper. To visit our demo website, please refer to [DiscoverPath.top](http://www.discoverpath.top/).
 
 ## Repository structure
 
@@ -9,7 +9,7 @@ This is a repo for SIGIR demo paper
     ├── web              # Web sources
     └── README.md
 
-## Planning features
+## Planning feature.
 
 - [ v ] API construction
     - [ v ] Basic functionality
