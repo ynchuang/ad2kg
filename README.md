@@ -1,4 +1,7 @@
 # DiscoverPath: A Knowledge Refinement and Retrieval System for Interdisciplinarity on Biomedical Research
+<img width="450" height="200" src="https://github.com/ynchuang/ad2kg/blob/main/fig/logo.png">
+
+## About this project
 
 This is a repository for the review SIGIR'23 demo paper.
 
