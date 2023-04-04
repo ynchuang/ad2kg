@@ -15,7 +15,7 @@ This project focus on interdisciplinary knowledge exploration in biomedical rese
 The overall GUI interface of the DiscoverPath system, which consists of a frontend interaction, a backend platform, and a graph database.
 
 <div align=center>
-<img width="600" height="400" src="https://github.com/ynchuang/ad2kg/blob/main/fig/demo.png">
+<img width="600" height="450" src="https://github.com/ynchuang/ad2kg/blob/main/fig/demo.png">
 </div>
 
 
@@ -23,7 +23,7 @@ The overall GUI interface of the DiscoverPath system, which consists of a fronte
 A using pipeline overview of DiscoverPath based on a client-server architecture. DiscoverPath follows a pipeline to gradually refine the knowledge graphs that meet the requirements of users. Users first give their initial queries to get the initial knowledge graphs, and then utilize the recommended queries to refine the initial one before visualizing the Interdisciplinary knowledge.
 
 <div align=center>
-<img width="600" height="400" src="https://github.com/ynchuang/ad2kg/blob/main/fig/pipeline.png">
+<img width="600" height="450" src="https://github.com/ynchuang/ad2kg/blob/main/fig/pipeline.png">
 </div>
 
 ### Demonstration
@@ -34,7 +34,7 @@ DiscoverPath system shows the results of interdisciplinary knowledge exploration
 </div>
 
 
-## Environment
+##  Install Environment
 -  OpenJDK 1.8
 -  Python 3.7
 -  neo4j 3.5
