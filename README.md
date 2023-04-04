@@ -3,23 +3,36 @@
 
 ## About this project
 
-This is a repository for the review SIGIR'23 demo paper.
+This project focus on interdisciplinary knowledge exploration in biomedical research. To increase the convenience of exploration, we build [DiscoverPath](https://www.researchgate.net/publication/369755614_DiscoverPath_A_Knowledge_Refinement_and_Retrieval_System_for_Interdisciplinarity_on_Biomedical_Research) system, a knowledge graph based retrieval system for interdisciplinary knowledge exploration in biomedical research. Biomedical research can significantly benefit from a powerful information retrieval system. However, existing tools heuristically adopt surface elements to represent an entity for retrieval, such as the authors and terminologies of an article, which severely limits the discovery of interdisciplinary knowledge hidden from different entities.
 
-To visit our demo website, please refer to the website link [DiscoverPath.top](http://www.discoverpath.top/).
+<div align=center>
+<img width="600" height="200" src="https://github.com/ynchuang/ad2kg/blob/main/fig/KG1.png">
+</div>
 
-## Repository structure
+## Utilization and Demonstration
 
-    .
-    ├── modeling         # KG and Rec engines/models
-    ├── web              # Web sources
-    └── README.md
+### Demonstration
+The overall GUI interface of the DiscoverPath system, which consists of a frontend interaction, a backend platform, and a graph database.
 
-## Planning feature.
+<div align=center>
+<img width="600" height="200" src="https://github.com/ynchuang/ad2kg/blob/main/fig/demo.png">
+</div>
 
-- [ v ] API construction
-    - [ v ] Basic functionality
-    - [ v ] Recommendation/IR Moudule
-- [ v ] Web construction
+
+### Utilization
+A using pipeline overview of DiscoverPath based on a client-server architecture. DiscoverPath follows a pipeline to gradually refine the knowledge graphs that meet the requirements of users. Users first give their initial queries to get the initial knowledge graphs, and then utilize the recommended queries to refine the initial one before visualizing the Interdisciplinary knowledge.
+
+<div align=center>
+<img width="600" height="200" src="https://github.com/ynchuang/ad2kg/blob/main/fig/pipeline.png">
+</div>
+
+### Demonstration
+DiscoverPath system shows the results of interdisciplinary knowledge exploration. We here select serveral results in Alzheimer’s disease, which is shown as follows:
+
+<div align=center>
+<img width="600" height="200" src="https://github.com/ynchuang/ad2kg/blob/main/fig/eval.png">
+</div>
+
 
 ## Environment
 -  OpenJDK 1.8
@@ -38,3 +51,14 @@ To visit our demo website, please refer to the website link [DiscoverPath.top](h
 python clean.py
 python neo2example.py
 ```
+
+## Cite this work
+
+If you find this project useful, you can cite this work by:
+````angular2html
+@misc{chuang2023discoverpath,
+      title={DiscoverPath: A Knowledge Refinement and Retrieval System for Interdisciplinarity on Biomedical Research},
+      author={Chuang, Yu-Neng and Wang, u-Neng and Chang, Chia-Yuan and Lai, Kwei-Herng and Tang, Ruixiang and Yang, Fan and Costilla-Reyes, Alfredo and Zhou, Kaixiong and Jiang, Xiaoqian and Hu, Xia}}
+      year={2022},
+      }
+````
