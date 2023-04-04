@@ -11,11 +11,11 @@ This project focus on interdisciplinary knowledge exploration in biomedical rese
 
 ## Utilization and Demonstration of DiscoverPath
 
-### Demonstration
+### Interface
 The overall GUI interface of the DiscoverPath system, which consists of a frontend interaction, a backend platform, and a graph database.
 
 <div align=center>
-<img width="600" height="380" src="./fig/demo.png">
+<img width="650" height="350" src="./fig/demo.png">
 </div>
 
 
@@ -30,7 +30,7 @@ A using pipeline overview of DiscoverPath based on a client-server architecture.
 DiscoverPath system shows the results of interdisciplinary knowledge exploration. We here select serveral results in Alzheimer’s disease, which is shown as follows:
 
 <div align=center>
-<img width="500" height="350" src="./fig/eval.png">
+<img width="500" height="400" src="./fig/eval.png">
 </div>
 
 
