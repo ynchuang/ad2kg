@@ -6,7 +6,7 @@
 This project focus on interdisciplinary knowledge exploration in biomedical research. To increase the convenience of exploration, we build [DiscoverPath](https://www.researchgate.net/publication/369755614_DiscoverPath_A_Knowledge_Refinement_and_Retrieval_System_for_Interdisciplinarity_on_Biomedical_Research) system, a knowledge graph based retrieval system for interdisciplinary knowledge exploration in biomedical research. Biomedical research can significantly benefit from a powerful information retrieval system. However, existing tools heuristically adopt surface elements to represent an entity for retrieval, such as the authors and terminologies of an article, which severely limits the discovery of interdisciplinary knowledge hidden from different entities.
 
 <div align=center>
-<img width="500" height="500" src="https://github.com/ynchuang/ad2kg/blob/main/fig/KG1.png">
+<img width="350" height="350" src="https://github.com/ynchuang/ad2kg/blob/main/fig/KG1.png">
 </div>
 
 ## Utilization and Demonstration
@@ -30,7 +30,7 @@ A using pipeline overview of DiscoverPath based on a client-server architecture.
 DiscoverPath system shows the results of interdisciplinary knowledge exploration. We here select serveral results in Alzheimer’s disease, which is shown as follows:
 
 <div align=center>
-<img width="300" height="500" src="https://github.com/ynchuang/ad2kg/blob/main/fig/eval.png">
+<img width="600" height="400" src="https://github.com/ynchuang/ad2kg/blob/main/fig/eval.png">
 </div>
 
 
