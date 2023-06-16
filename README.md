@@ -58,9 +58,10 @@ python neo2example.py
 
 If you find this project useful, you can cite this work by:
 ````angular2html
-@misc{chuang2023discoverpath,
-      title={DiscoverPath: A Knowledge Refinement and Retrieval System for Interdisciplinarity on Biomedical Research},
-      author={Chuang, Yu-Neng and Wang, u-Neng and Chang, Chia-Yuan and Lai, Kwei-Herng and Tang, Ruixiang and Yang, Fan and Costilla-Reyes, Alfredo and Zhou, Kaixiong and Jiang, Xiaoqian and Hu, Xia},
-      year={2022}
+@article{chuang2018discoverpath,
+  title={DiscoverPath: A Knowledge Refinement and Retrieval System for Interdisciplinarity on Biomedical Research},
+  author={Chuang, Yu-Neng and Wang, Guanchu and Chang, Chia-Yuan and Lai, Kwei-Herng and Zha, Daochen and Tang, Ruixiang and Yang, Fan and Reyes, Alfredo Costilla and Zhou, Kaixiong and Jiang, Xiaoqian and Hu, Xia},
+  year={2023}
+}
 }
 ````
