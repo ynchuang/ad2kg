@@ -63,5 +63,4 @@ If you find this project useful, you can cite this work by:
   author={Chuang, Yu-Neng and Wang, Guanchu and Chang, Chia-Yuan and Lai, Kwei-Herng and Zha, Daochen and Tang, Ruixiang and Yang, Fan and Reyes, Alfredo Costilla and Zhou, Kaixiong and Jiang, Xiaoqian and Hu, Xia},
   year={2023}
 }
-}
 ````
